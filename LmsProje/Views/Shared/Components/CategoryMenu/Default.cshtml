@@ -1,0 +1,19 @@
+﻿@model List<LmsProje.Entities.Category>
+
+<div class="dropdown">
+    <a class="nav-link fw-bold text-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+        Kategoriler
+    </a>
+    <ul class="dropdown-menu shadow border-0 mt-2">
+        @foreach (var item in Model)
+        {
+            <li>
+                <a class="dropdown-item py-2" href="/Home/Search?query=@item.Name">
+                    @item.Name
+                </a>
+            </li>
+        }
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item fw-bold text-primary" href="/Home/Index#kurslar">Tüm Kurslar</a></li>
+    </ul>
+</div>

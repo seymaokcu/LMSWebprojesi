@@ -1,0 +1,21 @@
+﻿@model int
+@{
+    ViewData["Title"] = "Ödeme Başarılı";
+}
+
+<div class="container text-center py-5">
+    <div class="card shadow-sm border-0 d-inline-block p-5">
+        <div class="mb-4">
+            <i class="fa-solid fa-circle-check text-success" style="font-size: 80px;"></i>
+        </div>
+        <h2 class="fw-bold mb-3">Ödeme Başarılı!</h2>
+        <p class="text-muted mb-4">
+            Sipariş Numaranız: <strong>#@Model</strong><br>
+            Kurs hesabınıza tanımlandı. Hemen öğrenmeye başlayabilirsiniz.
+        </p>
+
+        <a href="/Home/Dashboard" class="btn btn-primary btn-lg px-5">
+            Kurslarıma Git
+        </a>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+﻿@model LmsProje.Entities.Course
+@{
+    ViewData["Title"] = "Yeni Kurs";
+}
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white"><h5 class="mb-0">Yeni Kurs Oluştur</h5></div>
+    <div class="card-body">
+        <form method="post">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <label class="fw-bold">Kurs Başlığı</label>
+                        <input type="text" asp-for="Title" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="fw-bold">Kısa Açıklama</label>
+                        <textarea asp-for="Description" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="fw-bold">Fiyat (TL)</label>
+                            <input type="number" asp-for="Price" class="form-control" step="0.01" value="0" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="fw-bold">Kategori Seç</label>
+                        <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.Categories">
+                            <option disabled selected>-- Seçiniz --</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="fw-bold">Resim URL (Opsiyonel)</label>
+                        <input type="text" asp-for="ImageUrl" class="form-control" placeholder="https://..." />
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 py-2">Kursu Kaydet</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

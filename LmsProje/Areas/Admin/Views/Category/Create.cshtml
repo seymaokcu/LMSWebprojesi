@@ -1,0 +1,36 @@
+﻿@model LmsProje.Entities.Category
+@{
+    ViewData["Title"] = "Yeni Kategori Ekle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow border-0">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0 fw-bold">Yeni Kategori Ekle</h5>
+                </div>
+                <div class="card-body p-4">
+
+                    <form action="/Admin/AddCategory" method="post">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Kategori Adı</label>
+                            <input type="text" name="name" class="form-control" placeholder="Örn: Yazılım" required />
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Url (Link Adı)</label>
+                            <input type="text" name="url" class="form-control" placeholder="Örn: yazilim" required />
+                            <small class="text-muted">Türkçe karakter ve boşluk kullanmayın (örn: veri-bilimi).</small>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 fw-bold">Kaydet</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

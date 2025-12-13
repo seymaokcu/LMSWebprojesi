@@ -1,0 +1,104 @@
+﻿@model LmsProje.Entities.Course
+@{
+    var currentLesson = ViewBag.CurrentLesson as LmsProje.Entities.Lesson;
+    ViewData["Title"] = currentLesson?.Title;
+}
+
+<div class="container-fluid py-3">
+    <div class="row">
+
+        <div class="col-md-9">
+            <div class="ratio ratio-16x9 bg-dark shadow-lg rounded overflow-hidden">
+                @if (!string.IsNullOrEmpty(currentLesson?.VideoUrl))
+                {
+                    <iframe src="@currentLesson.VideoUrl" allowfullscreen></iframe>
+                }
+                else
+                {
+                    <div class="d-flex align-items-center justify-content-center text-white">
+                        <h3>Bu ders için video yüklenmemiş.</h3>
+                    </div>
+                }
+            </div>
+
+            <div class="mt-3">
+                <h2 class="fw-bold">@currentLesson?.Title</h2>
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-3">
+                    <span class="text-muted">@Model.Title &gt; @currentLesson?.Section?.Name</span>
+
+                </div>
+
+                <div class="mt-3">
+                    <h2 class="fw-bold">@currentLesson?.Title</h2>
+
+                    <div class="d-flex justify-content-between align-items-center border-bottom pb-3">
+                        <span class="text-muted">@Model.Title &gt; @currentLesson?.Section?.Name</span>
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            bool isCompleted = (bool)ViewBag.IsLessonCompleted;
+
+                            if (isCompleted)
+                            {
+                                <button class="btn btn-secondary" disabled>
+                                    <i class="fa-solid fa-check-double me-2"></i> Tamamlandı
+                                </button>
+                            }
+                            else
+                            {
+                                <form action="/Home/CompleteLesson" method="post" style="display:inline;">
+                                    <input type="hidden" name="lessonId" value="@currentLesson.Id" />
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fa-regular fa-square-check me-2"></i> Dersi Tamamla
+                                    </button>
+                                </form>
+                            }
+                        }
+                        else
+                        {
+                            <a href="/Account/Login" class="btn btn-outline-primary">
+                                <i class="fa-solid fa-lock me-2"></i> İlerlemeyi Kaydetmek İçin Giriş Yap
+                            </a>
+                        }
+
+                    </div>
+                    <p class="mt-3 text-muted">Dersin açıklaması buraya gelebilir...</p>
+                </div>
+                </div>
+                <p class="mt-3 text-muted">Dersin açıklaması buraya gelebilir...</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-white fw-bold">
+                    Kurs İçeriği
+                </div>
+                <div class="card-body p-0 overflow-auto" style="max-height: 80vh;">
+
+                    @foreach (var sec in Model.Sections)
+                    {
+                        <div class="bg-light p-2 border-bottom fw-bold text-secondary small">
+                            @sec.Name
+                        </div>
+                        <div class="list-group list-group-flush">
+                            @foreach (var lesson in sec.Lessons)
+                            {
+                                string activeClass = (lesson.Id == currentLesson.Id) ? "active" : "";
+
+                                <a href="/Home/Watch?lessonId=@lesson.Id" class="list-group-item list-group-item-action @activeClass d-flex justify-content-between align-items-center">
+                                    <div class="text-truncate me-2">
+                                        <i class="fa-regular fa-circle-play me-2"></i> @lesson.Title
+                                    </div>
+                                    <small>@lesson.DurationMinutes dk</small>
+                                </a>
+                            }
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

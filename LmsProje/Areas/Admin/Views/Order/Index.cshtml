@@ -1,0 +1,67 @@
+﻿@model List<LmsProje.Entities.Order>
+@{
+    ViewData["Title"] = "Siparişler"; Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3><i class="fa-solid fa-cart-shopping me-2"></i> Sipariş Geçmişi</h3>
+    <div class="bg-white p-2 border rounded shadow-sm text-success fw-bold">
+        Toplam Ciro: @Model.Sum(x => x.TotalPrice).ToString("N2") ₺
+    </div>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0 align-middle">
+            <thead class="bg-light">
+                <tr>
+                    <th class="ps-4">#Sipariş No</th>
+                    <th>Müşteri</th>
+                    <th>Satın Alınan Kurslar</th>
+                    <th>Tutar</th>
+                    <th>Tarih</th>
+                    <th>Durum</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count == 0)
+                {
+                    <tr>
+                        <td colspan="6" class="text-center py-4 text-muted">Henüz sipariş yok.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <td class="ps-4 fw-bold">#@order.Id</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-light rounded-circle d-flex justify-content-center align-items-center me-2" style="width:35px; height:35px;">
+                                        <i class="fa-solid fa-user text-secondary"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold">@order.User?.FirstName @order.User?.LastName</div>
+                                        <div class="small text-muted">@order.User?.Email</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                @foreach (var item in order.OrderItems)
+                                {
+                                    <span class="badge bg-primary me-1">@item.Course?.Title</span>
+                                }
+                            </td>
+                            <td class="fw-bold text-success">@order.TotalPrice.ToString("N2") ₺</td>
+                            <td>@order.OrderDate.ToString("dd.MM.yyyy HH:mm")</td>
+                            <td>
+                                <span class="badge bg-success">@order.OrderStatus</span>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

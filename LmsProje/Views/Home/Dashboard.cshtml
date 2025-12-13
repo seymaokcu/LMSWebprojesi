@@ -1,0 +1,85 @@
+﻿@model List<LmsProje.Entities.Course>
+@{
+    ViewData["Title"] = "Öğrenim İçeriğim";
+}
+
+<div class="container py-5">
+    <div class="d-flex align-items-center mb-5 border-bottom pb-4">
+        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px; font-size: 30px;">
+            <i class="fa-solid fa-user"></i>
+        </div>
+        <div class="ms-4">
+            <h2 class="fw-bold mb-0">Merhaba, @User.Identity.Name 👋</h2>
+            <p class="text-muted">Öğrenme yolculuğun harika gidiyor!</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <h4 class="fw-bold mb-4"><i class="fa-solid fa-play-circle text-primary me-2"></i> Kurslarım</h4>
+
+            @if (Model.Count == 0)
+            {
+                <div class="alert alert-light border text-center py-5">
+                    <p class="mb-3">Henüz bir kursa başlamadın.</p>
+                    <a href="/" class="btn btn-primary">Kursları Keşfet</a>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100 shadow-sm border-0">
+                                <img src="@item.ImageUrl" class="card-img-top" style="height: 140px; object-fit: cover;">
+                                <div class="card-body">
+                                    <h6 class="fw-bold text-truncate">@item.Title</h6>
+                                    <div class="d-grid mt-3">
+                                        <a href="/Home/Details/@item.Id" class="btn btn-sm btn-outline-primary">Devam Et</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 bg-light">
+                <div class="card-header bg-white fw-bold">
+                    <i class="fa-solid fa-trophy text-warning me-2"></i> Rozetlerim
+                </div>
+                <div class="card-body">
+                    @{
+                        var badges = ViewBag.MyBadges as List<LmsProje.Entities.UserBadge>;
+                    }
+
+                    @if (badges == null || badges.Count == 0)
+                    {
+                        <div class="text-center text-muted small py-3">
+                            <i class="fa-solid fa-lock fa-2x mb-2 opacity-25"></i><br />
+                            Henüz rozet kazanmadın.<br />
+                            Dersleri tamamla, rozetleri kap!
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row g-2">
+                            @foreach (var ub in badges)
+                            {
+                                <div class="col-4 text-center">
+                                    <div class="bg-white p-2 rounded shadow-sm" title="@ub.Badge.Name">
+                                        <i class="@ub.Badge.IconUrl fa-2x text-warning mb-1"></i>
+                                        <div style="font-size: 10px;" class="fw-bold text-truncate">@ub.Badge.Name</div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

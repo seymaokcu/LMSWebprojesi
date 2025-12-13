@@ -1,0 +1,79 @@
+﻿@{
+    ViewData["Title"] = "Eğitmen Olun";
+}
+
+<div class="text-center py-5 mb-5" style="background-color: var(--primary-brown); color: #fff; border-radius: 0 0 50% 50% / 4%;">
+    <div class="container py-5">
+        <h1 class="display-4 fw-bold mb-3 font-serif">Gel, Bildiklerini Paylaş.</h1>
+        <p class="lead mb-4 opacity-75 mx-auto" style="max-width: 700px;">
+            Uzmanlığınızı gelire dönüştürün. Milyonlarca öğrenciye ulaşın ve hayatları değiştirin.
+            LmsAkademi'de eğitmen olmak tamamen ücretsizdir.
+        </p>
+
+        <form action="/Instructor/BecomeInstructor" method="post">
+            <button type="submit" class="btn btn-light btn-lg px-5 py-3 fw-bold rounded-pill shadow">
+                Hemen Eğitmen Ol <i class="fa-solid fa-arrow-right ms-2"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="row text-center g-4">
+        <div class="col-md-4">
+            <div class="p-4 border rounded h-100 hover-card bg-white shadow-sm">
+                <i class="fa-solid fa-chalkboard-user fa-3x text-primary mb-3"></i>
+                <h4 class="fw-bold">Kendi Tarzınla Öğret</h4>
+                <p class="text-muted">Müfredatını kendin belirle, derslerini istediğin gibi çek ve yayınla. Kontrol tamamen sende.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-4 border rounded h-100 hover-card bg-white shadow-sm">
+                <i class="fa-solid fa-sack-dollar fa-3x text-warning mb-3"></i>
+                <h4 class="fw-bold">Gelir Elde Et</h4>
+                <p class="text-muted">Her kurs satışından payını al. Bilgini pasif gelire dönüştürmenin en keyifli yolu.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-4 border rounded h-100 hover-card bg-white shadow-sm">
+                <i class="fa-solid fa-users fa-3x text-success mb-3"></i>
+                <h4 class="fw-bold">Topluluğa İlham Ver</h4>
+                <p class="text-muted">Binlerce öğrencinin kariyer yolculuğuna ışık tut. Sorularını yanıtla ve rehber ol.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-light py-5 text-center border-top border-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <h2 class="fw-bold text-dark">500+</h2>
+                <p class="text-muted text-uppercase small ls-1">Aktif Eğitmen</p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h2 class="fw-bold text-dark">12.000+</h2>
+                <p class="text-muted text-uppercase small ls-1">Öğrenci</p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h2 class="fw-bold text-dark">₺1.5M</h2>
+                <p class="text-muted text-uppercase small ls-1">Eğitmenlere Ödenen</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Ufak animasyon efekti */
+    .hover-card {
+        transition: transform 0.3s;
+    }
+
+        .hover-card:hover {
+            transform: translateY(-10px);
+        }
+
+    .ls-1 {
+        letter-spacing: 2px;
+    }
+</style>

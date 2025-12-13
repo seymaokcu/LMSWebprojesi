@@ -1,0 +1,68 @@
+﻿@model LmsProje.Entities.Course
+@{
+    ViewData["Title"] = "Yeni Kurs Oluştur";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0">
+                <div class="card-header bg-white py-3">
+                    <h4 class="mb-0 fw-bold"><i class="fa-solid fa-clapperboard me-2 text-primary"></i> Yeni Kurs Oluştur</h4>
+                </div>
+                <div class="card-body p-4">
+
+                    <form asp-action="Create" method="post" enctype="multipart/form-data">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Kurs Başlığı</label>
+                            <input asp-for="Title" class="form-control form-control-lg" placeholder="Örn: Sıfırdan İleri Seviye C# Programlama" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Kısa Açıklama</label>
+                            <textarea asp-for="Description" class="form-control" rows="3" placeholder="Öğrenciler bu kursta neler öğrenecek?"></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Fiyat (₺)</label>
+                                <div class="input-group">
+                                    <input asp-for="Price" type="number" class="form-control" value="0" />
+                                    <span class="input-group-text">₺</span>
+                                </div>
+                                <div class="form-check mt-2">
+                                    <input asp-for="IsFree" class="form-check-input" type="checkbox" id="isFreeCheck">
+                                    <label class="form-check-label small" for="isFreeCheck">Bu kurs ücretsiz olacak</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Kategori</label>
+                                <select asp-for="CategoryId" class="form-select">
+                                    @foreach (var cat in ViewBag.Categories as List<LmsProje.Entities.Category>)
+                                    {
+                                        <option value="@cat.Id">@cat.Name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Kurs Kapak Resmi</label>
+                            <input type="file" name="imageFile" class="form-control" accept="image/*" />
+                            <small class="text-muted">Önerilen boyut: 1280x720 piksel (JPG, PNG)</small>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg fw-bold">
+                                Kursu Oluştur ve Devam Et <i class="fa-solid fa-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

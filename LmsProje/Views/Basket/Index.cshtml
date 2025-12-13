@@ -1,0 +1,66 @@
+﻿@model LmsProje.Entities.Basket
+@{
+    ViewData["Title"] = "Sepetim";
+}
+
+<div class="container py-5">
+    <h2 class="fw-bold mb-4">Alışveriş Sepetim (@Model.Items.Count Ürün)</h2>
+
+    @if (!Model.Items.Any())
+    {
+        <div class="alert alert-warning text-center py-5">
+            <h4>Sepetin şu an boş 😔</h4>
+            <a href="/" class="btn btn-primary mt-3">Kursları Keşfet</a>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        @foreach (var item in Model.Items)
+                        {
+                            <div class="d-flex justify-content-between align-items-center border-bottom py-3">
+                                <div class="d-flex align-items-center">
+                                    <img src="@item.Course.ImageUrl" class="rounded me-3" style="width: 100px; height: 60px; object-fit: cover;">
+                                    <div>
+                                        <h6 class="fw-bold mb-1">@item.Course.Title</h6>
+                                        <small class="text-muted">Eğitmen: @(item.Course.Instructor?.FirstName ?? "LMS Proje")</small>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <div class="fw-bold fs-5 text-primary">@item.Price ₺</div>
+                                    <a href="/Basket/Remove?itemId=@item.Id" class="text-danger small text-decoration-none">
+                                        <i class="fa-solid fa-trash me-1"></i> Sil
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow border-0 bg-light">
+                    <div class="card-body p-4">
+                        <h4 class="fw-bold mb-3">Sipariş Özeti</h4>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Ara Toplam</span>
+                            <span>@Model.Items.Sum(x => x.Price) ₺</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-4 fs-4 fw-bold text-dark">
+                            <span>Toplam</span>
+                            <span>@Model.Items.Sum(x => x.Price) ₺</span>
+                        </div>
+
+                        <a href="/Basket/Checkout" class="btn btn-success w-100 btn-lg fw-bold">
+                            <i class="fa-solid fa-lock me-2"></i> Ödeme Yap
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

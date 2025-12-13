@@ -1,0 +1,143 @@
+﻿@model LmsProje.Models.DashboardViewModel
+@{
+    ViewData["Title"] = "Yönetim Paneli";
+}
+
+<div class="container py-5">
+    <h2 class="fw-bold font-serif mb-4">
+        <i class="fa-solid fa-gauge-high text-primary me-2"></i> Yönetim Paneli
+    </h2>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100 overflow-hidden">
+                <div class="card-body p-4 d-flex align-items-center justify-content-between">
+                    <div>
+                        <h6 class="text-muted text-uppercase small fw-bold">Toplam Kurs</h6>
+                        <h2 class="fw-bold text-dark mb-0">@Model.TotalCourses</h2>
+                    </div>
+                    <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-circle">
+                        <i class="fa-solid fa-video fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100 overflow-hidden">
+                <div class="card-body p-4 d-flex align-items-center justify-content-between">
+                    <div>
+                        <h6 class="text-muted text-uppercase small fw-bold">Kullanıcılar</h6>
+                        <h2 class="fw-bold text-dark mb-0">@Model.TotalUsers</h2>
+                    </div>
+                    <div class="bg-success bg-opacity-10 text-success p-3 rounded-circle">
+                        <i class="fa-solid fa-users fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100 overflow-hidden">
+                <div class="card-body p-4 d-flex align-items-center justify-content-between">
+                    <div>
+                        <h6 class="text-muted text-uppercase small fw-bold">Kategoriler</h6>
+                        <h2 class="fw-bold text-dark mb-0">@Model.TotalCategories</h2>
+                    </div>
+                    <div class="bg-warning bg-opacity-10 text-warning p-3 rounded-circle">
+                        <i class="fa-solid fa-layer-group fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100 overflow-hidden">
+                <div class="card-body p-4 d-flex align-items-center justify-content-between">
+                    <div>
+                        <h6 class="text-muted text-uppercase small fw-bold">Katalog Değeri</h6>
+                        <h2 class="fw-bold text-dark mb-0">@Model.TotalPotentialRevenue ₺</h2>
+                    </div>
+                    <div class="bg-info bg-opacity-10 text-info p-3 rounded-circle">
+                        <i class="fa-solid fa-wallet fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3">
+                    <h6 class="mb-0 fw-bold">Kategori Dağılımı</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3">
+                    <h6 class="mb-0 fw-bold">Aylık Ziyaretçi (Demo)</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="visitorChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    
+    const catLabels = @Html.Raw(Json.Serialize(Model.CategoryNames));
+    const catData = @Html.Raw(Json.Serialize(Model.CourseCounts));
+
+    const ctx1 = document.getElementById('categoryChart').getContext('2d');
+    new Chart(ctx1, {
+        type: 'doughnut', 
+        data: {
+            labels: catLabels,
+            datasets: [{
+                label: 'Kurs Sayısı',
+                data: catData,
+                backgroundColor: [
+                    '#ff9f43', '#0f4c81', '#2ecc71', '#e74c3c', '#9b59b6', '#34495e'
+                ],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom' }
+            }
+        }
+    });
+
+ 
+    const ctx2 = document.getElementById('visitorChart').getContext('2d');
+    new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran'],
+            datasets: [{
+                label: 'Ziyaretçiler',
+                data: [120, 190, 300, 500, 200, 300],
+                backgroundColor: '#0f4c81',
+                borderRadius: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+</script>

@@ -1,0 +1,31 @@
+﻿@model List<LmsProje.Entities.Course>
+@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+<div class="p-5 mb-4 rounded-3 text-center position-relative overflow-hidden shadow-sm" style="background-color: #2c3e50; color: white;">
+    <div class="container-fluid py-3">
+        <h1 class="display-5 fw-bold text-white">Geleceğini Kodla</h1>
+        <p class="fs-4">Yazılım eğitimleri tek platformda.</p>
+    </div>
+</div>
+
+<div class="container" id="kurslar">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-3 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="@item.ImageUrl" class="card-img-top" alt="@item.Title" style="height: 180px; object-fit: cover;">
+                    <div class="card-body">
+                        <h6 class="card-title fw-bold">@item.Title</h6>
+                        <div class="d-flex justify-content-between mt-3">
+                            <span class="text-primary fw-bold">@item.Price ₺</span>
+                            <a href="/Home/Details/@item.Id" class="btn btn-sm btn-outline-primary">İncele</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

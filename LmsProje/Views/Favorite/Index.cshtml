@@ -1,0 +1,46 @@
+﻿@model List<LmsProje.Entities.Favorite>
+@{
+    ViewData["Title"] = "İstek Listem";
+}
+
+<div class="container py-5">
+    <h2 class="fw-bold mb-4 font-serif">İstek Listem (@Model.Count)</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5 border rounded bg-light">
+            <i class="fa-regular fa-heart fa-3x text-muted mb-3"></i>
+            <h4>Listeniz şu an boş.</h4>
+            <p class="text-muted">Gözünüze kestirdiğiniz kursları buraya ekleyebilirsiniz.</p>
+            <a href="/" class="btn btn-primary mt-2">Kursları Keşfet</a>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <form action="/Favorite/Toggle" method="post" class="position-absolute top-0 end-0 m-2" style="z-index: 10;">
+                            <input type="hidden" name="courseId" value="@item.CourseId" />
+                            <input type="hidden" name="returnUrl" value="/Favorite/Index" />
+                            <button class="btn btn-light rounded-circle shadow-sm p-0 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
+                                <i class="fa-solid fa-xmark text-muted"></i>
+                            </button>
+                        </form>
+
+                        <img src="@item.Course.ImageUrl" class="card-img-top" style="height: 150px; object-fit: cover;">
+                        <div class="card-body p-3">
+                            <h6 class="fw-bold text-truncate">@item.Course.Title</h6>
+                            <div class="text-primary fw-bold mt-2">@item.Course.Price ₺</div>
+                            <div class="d-grid gap-2 mt-3">
+                                <a href="/Basket/AddToBasket?courseId=@item.CourseId" class="btn btn-outline-primary btn-sm">Sepete Ekle</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

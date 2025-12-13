@@ -1,0 +1,157 @@
+﻿@model LmsProje.Entities.Course
+@{ ViewData["Title"] = "Müfredat Yönetimi"; }
+
+<div class="container py-5">
+    
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <a href="/Instructor/MyCourses" class="text-muted text-decoration-none mb-2 d-block">
+                <i class="fa-solid fa-arrow-left me-1"></i> Kurslara Dön
+            </a>
+            <h2 class="fw-bold font-serif">@Model.Title</h2>
+            <span class="badge bg-primary">Müfredat Düzenleniyor</span>
+        </div>
+        
+        <button class="btn btn-dark rounded-pill px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#addSectionModal">
+            <i class="fa-solid fa-folder-plus me-2"></i> Yeni Bölüm Ekle
+        </button>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            @if (!Model.Sections.Any())
+            {
+                <div class="alert alert-warning border-0 shadow-sm text-center py-5">
+                    <i class="fa-solid fa-layer-group fa-3x mb-3 text-warning"></i>
+                    <h5>Bu kursun henüz bir içeriği yok.</h5>
+                    <p>Sağ üstteki butona tıklayarak ilk bölümünü oluştur.</p>
+                </div>
+            }
+            else
+            {
+                <div class="accordion" id="curriculumAccordion">
+                    @foreach (var currSection in Model.Sections)
+                    {
+                        <div class="accordion-item border-0 shadow-sm mb-3 rounded overflow-hidden">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed bg-light text-dark fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#sec_@currSection.Id">
+                                    <i class="fa-solid fa-folder-open me-2 text-primary"></i> @currSection.Name
+                                </button>
+                            </h2>
+                            <div id="sec_@currSection.Id" class="accordion-collapse collapse" data-bs-parent="#curriculumAccordion">
+                                <div class="accordion-body bg-white">
+                                    <ul class="list-group list-group-flush mb-3">
+                                        @foreach (var lesson in currSection.Lessons)
+                                        {
+                                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                                <div>
+                                                    <i class="fa-brands fa-youtube me-2 text-danger"></i>
+                                                    @lesson.Title
+                                                    @if (lesson.IsPreview)
+                                                    {
+                                                        <span class="badge bg-success ms-2" style="font-size: 0.6rem;">Önizleme</span>
+                                                    }
+                                                </div>
+                                                <span class="text-muted small">@lesson.DurationMinutes dk</span>
+                                            </li>
+                                        }
+                                        @if (!currSection.Lessons.Any())
+                                        {
+                                            <li class="text-muted small fst-italic">Henüz ders eklenmemiş.</li>
+                                        }
+                                    </ul>
+                                    <div class="d-flex justify-content-between border-top pt-3">
+                                        <a href="/CourseManager/DeleteSection/@currSection.Id" class="text-danger small text-decoration-none" onclick="return confirm('Bu bölümü silmek istediğine emin misin?')">
+                                            <i class="fa-solid fa-trash me-1"></i> Bölümü Sil
+                                        </a>
+                                        <button class="btn btn-sm btn-outline-primary rounded-pill" onclick="openLessonModal(@currSection.Id, '@currSection.Name')">
+                                            <i class="fa-solid fa-plus me-1"></i> Ders Ekle
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 p-3 bg-light">
+                <h6 class="fw-bold mb-3">İpuçları</h6>
+                <ul class="small text-muted ps-3">
+                    <li class="mb-2">Bölümler, kursunuzun ana başlıklarıdır (Örn: Giriş, Modül 1).</li>
+                    <li class="mb-2">Dersler, bölümlerin altındaki videolardır.</li>
+                    <li>Youtube videoları için "Embed" linkini kullanmayı unutmayın.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addSectionModal" tabindex="-1">
+    <div class="modal-dialog">
+        <form action="/CourseManager/AddSection" method="post" class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-bold">Yeni Bölüm Oluştur</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="courseId" value="@Model.Id" />
+                <label class="form-label">Bölüm Adı</label>
+                <input type="text" name="sectionName" class="form-control" placeholder="Örn: Giriş ve Kurulumlar" required />
+            </div>
+            <div class="modal-footer border-0">
+                <button type="submit" class="btn btn-dark w-100 rounded-pill">Ekle</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="addLessonModal" tabindex="-1">
+    <div class="modal-dialog">
+        <form action="/CourseManager/AddLesson" method="post" class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-bold">Ders Ekle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="sectionId" id="modalSectionId" />
+                <p class="small text-muted mb-3">Şu bölüme ekleniyor: <strong id="modalSectionName" class="text-dark"></strong></p>
+
+                <div class="mb-3">
+                    <label class="form-label">Ders Başlığı</label>
+                    <input type="text" name="title" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Video URL (Embed)</label>
+                    <input type="text" name="videoUrl" class="form-control" placeholder="https://www.youtube.com/embed/..." />
+                </div>
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <label class="form-label">Süre (Dk)</label>
+                        <input type="number" name="duration" class="form-control" value="10" />
+                    </div>
+                    <div class="col-6 pt-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="isPreview" value="true" id="previewCheck">
+                            <label class="form-check-label small" for="previewCheck">Önizleme (Ücretsiz)</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="submit" class="btn btn-primary w-100 rounded-pill">Dersi Kaydet</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openLessonModal(sectionId, sectionName) {
+        document.getElementById('modalSectionId').value = sectionId;
+        document.getElementById('modalSectionName').innerText = sectionName;
+        var myModal = new bootstrap.Modal(document.getElementById('addLessonModal'));
+        myModal.show();
+    }
+</script>

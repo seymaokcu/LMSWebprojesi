@@ -1,0 +1,78 @@
+﻿@model LmsProje.Entities.Course
+@{
+    ViewData["Title"] = "Müfredat: " + Model.Title;
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3><i class="fa-solid fa-book-open me-2"></i> @Model.Title <small class="text-muted fs-6">Müfredat Yönetimi</small></h3>
+        <a href="/Admin/Course/Index" class="btn btn-secondary">← Kurslara Dön</a>
+    </div>
+
+    <div class="card mb-4 border-primary border-start border-4 shadow-sm">
+        <div class="card-body">
+            <h6 class="fw-bold text-primary">Yeni Bölüm Ekle</h6>
+            <form action="/Admin/Section/AddSection" method="post" class="d-flex gap-2">
+                <input type="hidden" name="courseId" value="@Model.Id" />
+                <input type="text" name="sectionName" class="form-control" placeholder="Örn: Bölüm 1 - Giriş" required />
+                <button type="submit" class="btn btn-primary px-4">Ekle</button>
+            </form>
+        </div>
+    </div>
+
+    @if (!Model.Sections.Any())
+    {
+        <div class="alert alert-info text-center">Henüz hiç bölüm eklenmemiş. Yukarıdan ekleyerek başlayın.</div>
+    }
+    else
+    {
+        @foreach (var sec in Model.Sections)
+        {
+            <div class="card mb-3 shadow-sm">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold">@sec.Name</h5>
+                    <a href="/Admin/Section/DeleteSection/@sec.Id" class="btn btn-sm btn-outline-danger" onclick="return confirm('Bölümü silmek istediğine emin misin?')"><i class="fa fa-trash"></i> Sil</a>
+                </div>
+
+                <div class="card-body">
+                    @if (sec.Lessons.Any())
+                    {
+                        <ul class="list-group mb-3">
+                            @foreach (var lesson in sec.Lessons)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span><i class="fa fa-play-circle me-2 text-success"></i> @lesson.Title</span>
+                                    <div>
+                                        <span class="badge bg-secondary me-2">@lesson.Duration dk</span>
+                                        <a href="/Admin/Section/DeleteLesson/@lesson.Id" class="text-danger"><i class="fa fa-times"></i></a>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <div class="text-muted small mb-3 fst-italic">Bu bölümde henüz ders yok.</div>
+                    }
+
+                    <form action="/Admin/Section/AddLesson" method="post" class="row g-2 bg-light p-3 rounded border">
+                        <input type="hidden" name="sectionId" value="@sec.Id" />
+                        <div class="col-md-5">
+                            <input type="text" name="lessonTitle" class="form-control form-control-sm" placeholder="Ders Başlığı" required />
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" name="videoUrl" class="form-control form-control-sm" placeholder="Video Linki (YouTube Embed)" />
+                        </div>
+                        <div class="col-md-2">
+                            <input type="number" name="duration" class="form-control form-control-sm" placeholder="Dk" step="0.1" />
+                        </div>
+                        <div class="col-md-1">
+                            <button class="btn btn-success btn-sm w-100 h-100"><i class="fa fa-plus"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        }
+    }
+</div>
