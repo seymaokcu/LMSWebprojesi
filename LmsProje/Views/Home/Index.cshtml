@@ -15,8 +15,27 @@
         @foreach (var item in Model)
         {
             <div class="col-md-3 mb-4">
-                <div class="card h-100 shadow-sm">
+                <div class="card h-100 shadow-sm position-relative">
+
+                    <!-- Favori (Kalp) -->
+                    <form action="/Favorite/Toggle" method="post"
+                          class="position-absolute top-0 end-0 m-2" style="z-index: 10;">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="courseId" value="@item.Id" />
+                        <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
+
+                        <button type="submit"
+                                class="btn btn-light btn-sm rounded-circle shadow"
+                                title="Favorilere ekle/çıkar" aria-label="Favori">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                 viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M8 14s6-4.35 6-8.1S11.5 1 8 4.1 2 1.9 2 5.9 8 14 8 14z" />
+                            </svg>
+                        </button>
+                    </form>
+
                     <img src="@item.ImageUrl" class="card-img-top" alt="@item.Title" style="height: 180px; object-fit: cover;">
+
                     <div class="card-body">
                         <h6 class="card-title fw-bold">@item.Title</h6>
                         <div class="d-flex justify-content-between mt-3">
@@ -28,4 +47,5 @@
             </div>
         }
     </div>
+
 </div>
